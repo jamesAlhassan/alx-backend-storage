@@ -12,5 +12,5 @@ BEGIN
     user_id,
     (SELECT id FROM projects WHERE name = project_name),
     score);
-END $$
+END //
 DELIMITER;
