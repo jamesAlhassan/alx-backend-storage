@@ -1,6 +1,5 @@
--- creates a stored procedure AddBonus that adds a new correction for a student
--- AddBonus is taking 3 inputs (in this order):
--- user_id, a users.id value (you can assume user_id is linked to an existing users)
+-- SQL script that creates a stored 
+-- procedure AddBonus that adds a new correction for a student
 DELIMITER //
 CREATE PROCEDURE AddBonus(IN user_id INTEGER, IN project_name VARCHAR(255), IN score INTEGER)
 BEGIN
