@@ -6,9 +6,30 @@
 import redis
 from typing import Union, Optional, Callable
 from uuid import uuid4 as uid
+from functools import wraps
 
 
 UnionOfTypes = Union[str, bytes, int, float]
+
+
+def count_calls(method: Callable) -> Callable:
+    '''
+    a system to count how many
+    times methods of the Cache class are called
+    '''
+    key = method.__qualname__
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        '''
+        increments the count for that key every time the
+        method is called and returns the value returned by the original
+        method.
+        '''
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
+
+    return wrapper
 
 
 class Cache:
@@ -21,6 +42,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: UnionOfTypes) -> str:
         '''
         takes a data argument and returns a string.
