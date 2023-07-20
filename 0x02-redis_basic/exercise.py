@@ -12,6 +12,19 @@ from functools import wraps
 UnionOfTypes = Union[str, bytes, int, float]
 
 
+def replay(method: Callable) -> None:
+    ' display the history of calls of a particular function.'
+    name = method.__qualname__
+    cache = redis.Redis()
+    calls = cache.get(name).decode("utf-8")
+    print("{} was called {} times:".format(name, calls))
+    inputs = cache.lrange(name + ":inputs", 0, -1)
+    outputs = cache.lrange(name + ":outputs", 0, -1)
+    for i, o in zip(inputs, outputs):
+        print("{}(*{}) -> {}".format(name, i.decode('utf-8'),
+                                     o.decode('utf-8')))
+
+
 def call_history(method: Callable) -> Callable:
     'stores the history of inputs and outputs for a particular function '
     key = method.__qualname__
