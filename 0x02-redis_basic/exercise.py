@@ -4,7 +4,7 @@
 '''
 
 import redis
-from typing import Union
+from typing import Union, Optional, Callable
 from uuid import uuid4 as uid
 
 
