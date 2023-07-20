@@ -40,3 +40,7 @@ class Cache:
             return fn(self._redis.get(key))
         data = self._redis.get(key)
         return data
+
+    def get_int(self: bytes) -> int:
+        'get number'
+        return int.from_bytes(self, sys.byteorder)
