@@ -44,3 +44,7 @@ class Cache:
     def get_int(self: bytes) -> int:
         'get number'
         return int.from_bytes(self, sys.byteorder)
+
+    def get_str(self: bytes) -> str:
+        'get  string'
+        return self.decode("utf-8")
